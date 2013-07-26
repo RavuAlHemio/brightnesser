@@ -1,3 +1,9 @@
+/**
+ * brightnesserd: The reference implementation of a Brightnesser daemon.
+ *
+ * Uses the Linux /sys/class/backlight interface.
+ */
+
 static MainLoop theloop;
 static int retcode = 0;
 

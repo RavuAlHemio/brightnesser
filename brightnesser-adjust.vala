@@ -1,3 +1,7 @@
+/**
+ * brightnesser-adjust: The reference implementation of a Brightnesser client.
+ */
+
 static const string DBUS_TARGET = "com.ondrahosek.Brightnesser";
 
 [DBus(name = "com.ondrahosek.Brightnesser.Enumerator")]
