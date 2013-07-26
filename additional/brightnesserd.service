@@ -1,0 +1,14 @@
+[Unit]
+Description=Allow adjustment of display brightness.
+
+[Service]
+Type=dbus
+BusName=com.ondrahosek.Brightnesser
+ExecStart=/usr/local/bin/brightnesserd
+User=root
+PrivateNetwork=yes
+PrivateTmp=yes
+StandardError=journal
+
+[Install]
+WantedBy=graphical.target

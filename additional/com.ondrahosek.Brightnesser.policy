@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1.0/policyconfig.dtd">
+<policyconfig>
+  <vendor>Ond&#345;ej Ho&#353;ek</vendor>
+  <vendor_url>http://ondrahosek.com</vendor_url>
+  <icon_name>brightnesser</icon_name>
+
+  <action id="com.ondrahosek.brightnesser.get">
+    <description>Get current display brightness</description>
+    <message>Getting display brightness requires privileges</message>
+
+    <defaults>
+      <allow_inactive>yes</allow_inactive>
+      <allow_active>yes</allow_active>
+    </defaults>
+  </action>
+
+  <action id="com.ondrahosek.brightnesser.set">
+    <description>Change current display brightness</description>
+    <message>Changing display brightness requires privileges</message>
+
+    <defaults>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>yes</allow_active>
+    </defaults>
+  </action>
+
+</policyconfig>

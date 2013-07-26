@@ -1,0 +1,5 @@
+[D-BUS Service]
+Name=com.ondrahosek.Brightnesser
+Exec=/usr/local/bin/brightnesserd
+User=root
+SystemdService=brightnesserd.service

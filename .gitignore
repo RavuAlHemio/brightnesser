@@ -1,0 +1,6 @@
+*.o
+brightnesser-adjust
+brightnesserd
+
+.clang_complete
+.ninja_log
