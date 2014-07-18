@@ -27,16 +27,22 @@ interface IAdjustable : Object
 
 static string? control = null;
 static int setval;
+static int setpercent;
 static int adjval;
+static int adjpercent;
 static bool getval = false;
+static bool getpercent = false;
 static bool getmax = false;
 static bool getlist = false;
 static const OptionEntry[] options = {
 	{ "control", 'c', 0, OptionArg.STRING, ref control, "Which brightness control to use.", "CONTROL" },
 	{ "set", 's', 0, OptionArg.INT, ref setval, "The brightness to which to set the control.", "BRIGHTNESS" },
-	{ "adjust", 'a', 0, OptionArg.INT, ref adjval, "The brightness to which to set the control.", "BRIGHTNESS" },
-	{ "get", 'g', 0, OptionArg.NONE, ref getval, "Return the brightness of the given control.", null },
+	{ "set-percent", 'p', 0, OptionArg.INT, ref setpercent, "The brightness percentage to which to set the control.", "PERCENTAGE" },
+	{ "adjust", 'a', 0, OptionArg.INT, ref adjval, "The value by which to adjust the brightness of the control.", "BRIGHTNESS" },
+	{ "adjust-percent", 'P', 0, OptionArg.INT, ref adjpercent, "The percentage by which to adjust the brightness of the control.", "PERCENTAGE" },
+	{ "get", 'g', 0, OptionArg.NONE, ref getval, "Return the current brightness of the given control.", null },
 	{ "get-max", 'm', 0, OptionArg.NONE, ref getmax, "Return the maximum brightness of the given control.", null },
+	{ "get-percent", 'G', 0, OptionArg.NONE, ref getpercent, "Return the current brightness of the given control in percent.", null },
 	{ "list", 'l', 0, OptionArg.NONE, ref getlist, "Return the list of available brightness controls.", null },
 	{ null }
 };
@@ -49,7 +55,9 @@ static void usagehint(string progname)
 int main(string[] args)
 {
 	setval = int.MAX;
+	setpercent = int.MAX;
 	adjval = int.MAX;
+	adjpercent = int.MAX;
 
 	try
 	{
@@ -67,7 +75,7 @@ int main(string[] args)
 
 	if (getlist)
 	{
-		if (control != null || setval != int.MAX || adjval != int.MAX || getval || getmax)
+		if (control != null || setval != int.MAX || setpercent != int.MAX || adjval != int.MAX || adjpercent != int.MAX || getval || getpercent || getmax)
 		{
 			stderr.printf("error: -l/--list must be used without any other options\n");
 			usagehint(args[0]);
@@ -121,11 +129,23 @@ int main(string[] args)
 	{
 		++set_options_counter;
 	}
+	if (setpercent != int.MAX)
+	{
+		++set_options_counter;
+	}
 	if (adjval != int.MAX)
 	{
 		++set_options_counter;
 	}
+	if (adjpercent != int.MAX)
+	{
+		++set_options_counter;
+	}
 	if (getval)
+	{
+		++set_options_counter;
+	}
+	if (getpercent)
 	{
 		++set_options_counter;
 	}
@@ -135,7 +155,7 @@ int main(string[] args)
 	}
 	if (set_options_counter != 1)
 	{
-		stderr.printf("error: if -c/--control is specified, exactly one of -s/--set, -a/--adjust, -g/--get and -m/--get-max must be specified as well\n");
+		stderr.printf("error: if -c/--control is specified, exactly one of -s/--set, -p/--set-percent, -a/--adjust, -P/--adjust-percent, -g/--get, -G/--get-percent and -m/--get-max must be specified as well\n");
 		usagehint(args[0]);
 		return 1;
 	}
@@ -164,14 +184,28 @@ int main(string[] args)
 			// set
 			iad.set_brightness(setval);
 		}
+		else if (setpercent != int.MAX)
+		{
+			int newval = (setpercent * iad.get_max_brightness()) / 100;
+			iad.set_brightness(newval);
+		}
 		else if (adjval != int.MAX)
 		{
 			// adjust
 			iad.adjust_brightness(adjval);
 		}
+		else if (adjpercent != int.MAX)
+		{
+			int newadj = (adjpercent * iad.get_max_brightness()) / 100;
+			iad.adjust_brightness(newadj);
+		}
 		else if (getval)
 		{
 			stdout.printf("%d\n", iad.get_brightness());
+		}
+		else if (getpercent)
+		{
+			stdout.printf("%d\n", (iad.get_brightness()*100)/iad.get_max_brightness());
 		}
 		else if (getmax)
 		{
