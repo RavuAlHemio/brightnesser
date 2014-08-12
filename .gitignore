@@ -3,4 +3,5 @@ brightnesser-adjust
 brightnesserd
 
 .clang_complete
+.ninja_deps
 .ninja_log
